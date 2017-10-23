@@ -11,6 +11,6 @@ In order to use the model on a video sequence you can run the predict_sequence_s
 I used the trained model on Caltech pedestrain dataset and here is two example of preformance of model on two videos:
 <p align="center">
   <img  src="images/2.gif" />
-  <img  src="images/3.gif" />
+  <img  src="images/myimage.gif" />
 </p>
  
