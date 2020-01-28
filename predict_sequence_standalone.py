@@ -2,9 +2,9 @@ import argparse
 import os
 import cv2
 import numpy as np
-from preprocessing import parse_annotation
-from utils import draw_boxes
-from frontend import YOLO
+#from preprocessing import parse_annotation
+from yoloutils import draw_boxes
+#from frontend import YOLO
 import json
 
 from keras.models import Model
@@ -193,19 +193,19 @@ def YOLOMODEL(path):
     
     model.load_weights(path)
     
-    print model.summary()
+    print(model.summary())
     return model
 
 
 def _main_():
-    path = '/home/hassan/Projects/imageNetChallenge/ILSVRC/basic-yolo-keras-master/models/bestModel_backup.h5'
+    path = 'bestModel_backup.h5'
     yolo = YOLOMODEL(path)
 
     ###############################
     #   Predict bounding boxes 
     ###############################
 
-    cap = cv2.VideoCapture('/home/hassan/Projects/Caltech_pedestrian/data/set00/V009.seq')   
+    cap = cv2.VideoCapture('test.avi')
     i = 0
     while True:
         ret, frame = cap.read()

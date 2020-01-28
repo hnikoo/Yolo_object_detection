@@ -2,8 +2,8 @@ import argparse
 import os
 import cv2
 import numpy as np
-from preprocessing import parse_annotation
-from utils import draw_boxes
+#from preprocessing import parse_annotation
+#from utils import draw_boxes
 
 input_size = 224
 max_box_per_image =10
@@ -13,6 +13,31 @@ nb_box   = 5
 class_wt = np.ones(nb_class, dtype='float32')
 anchors  = [0.57273, 0.677385, 1.87446, 2.06253, 3.33843, 5.47434, 7.88282, 3.52778, 9.77052, 9.16828]
 
+
+class BoundBox:
+    def __init__(self, x, y, w, h, c=None, classes=None):
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
+
+        self.c = c
+        self.classes = classes
+
+        self.label = -1
+        self.score = -1
+
+    def get_label(self):
+        if self.label == -1:
+            self.label = np.argmax(self.classes)
+
+        return self.label
+
+    def get_score(self):
+        if self.score == -1:
+            self.score = self.classes[self.get_label()]
+
+        return self.score
 
 
 def normalize( image):
@@ -119,13 +144,13 @@ def decode_netout(netout, obj_threshold=0.3, nms_threshold=0.3):
     for c in range(nb_class):
         sorted_indices = list(reversed(np.argsort([box.classes[c] for box in boxes])))
 
-        for i in xrange(len(sorted_indices)):
+        for i in range(len(sorted_indices)):
             index_i = sorted_indices[i]
 
             if boxes[index_i].classes[c] == 0: 
                 continue
             else:
-                for j in xrange(i+1, len(sorted_indices)):
+                for j in range(i+1, len(sorted_indices)):
                     index_j = sorted_indices[j]
 
                     if bbox_iou(boxes[index_i], boxes[index_j]) >= nms_threshold:
